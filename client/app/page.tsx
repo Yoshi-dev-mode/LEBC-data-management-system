@@ -1,5 +1,4 @@
 'use client'
-import { useEffect, useState } from "react";
 import Mainpage from "./components/Mainpage";
 
 export default function Home() {

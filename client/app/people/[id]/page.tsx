@@ -49,10 +49,12 @@ export default function MemberProfile() {
       {/* IMAGE */}
       <div className="flex flex-col items-center">
         {isEditing && previewPhoto ? (
-          <img
+          <Image
             src={previewPhoto}
             alt="Preview"
             className="w-40 h-40 rounded-full object-cover"
+            width={150}
+            height={150}
           />
         ) : (
           <Image

@@ -7,19 +7,8 @@ import { extractDriveFileId } from "@/lib/drive";
 import Link from "next/link";
 import Image from "next/image";
 
-const selectStyle = `
-    border px-4 py-2 rounded-lg
-    transition
-    focus:outline-none
-    focus:border-[#1CB536]
-    focus:ring-2
-    focus:ring-[#1CB536]/40
-    cursor-pointer
-  `;
-
 export default function PeopleGrid() {
   const { data } = useContext(Context);
-  console.log(data)
   const [search, setSearch] = useState("");
   const [memberFilter, setMemberFilter] = useState("All");
   const [baptizedFilter, setBaptizedFilter] = useState("All");
