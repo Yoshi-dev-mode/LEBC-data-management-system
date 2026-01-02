@@ -1,6 +1,6 @@
 "use client";
 import { useState, useContext } from "react";
-import { Context } from "../layout";
+import { Context } from "../providers/Providers";
 import { PeopleQuantityIcon } from "../../lib/icons";
 import CustomSelect from "@/app/components/CustomSelect"
 import { extractDriveFileId } from "@/lib/drive";

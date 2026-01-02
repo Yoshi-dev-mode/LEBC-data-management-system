@@ -1,4 +1,6 @@
-export async function uploadImage(file: File) {
+import { SheetRows } from "@/app/types/sheet";
+
+export async function uploadImage(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
 
@@ -7,12 +9,13 @@ export async function uploadImage(file: File) {
     body: formData,
   });
 
-  const data = await res.json();
+  const data: { url?: string } = await res.json();
   if (!data.url) throw new Error("Upload failed");
+
   return data.url;
 }
 
-export async function deleteImage(fileId: string) {
+export async function deleteImage(fileId: string): Promise<void> {
   await fetch("/api/delete-image", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -20,7 +23,7 @@ export async function deleteImage(fileId: string) {
   });
 }
 
-export async function saveMembers(rows: any[]) {
+export async function saveMembers(rows: SheetRows): Promise<void> {
   await fetch("/api/members", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -28,7 +31,7 @@ export async function saveMembers(rows: any[]) {
   });
 }
 
-export async function deleteMember(id: string | number) {
+export async function deleteMember(id: string | number): Promise<void> {
   await fetch("/api/members", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },

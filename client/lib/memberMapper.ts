@@ -1,19 +1,22 @@
-export function memberToRow(m: any) {
+import { Member } from "@/app/types/member";
+import { SheetRow } from "@/app/types/sheet";
+
+export function memberToRow(member: Member): SheetRow {
   return [
-    m.id,
-    m.timestamp,
-    m.name,
-    m.gender,
-    m.address,
-    m.birthday,
-    m.member,
-    m.baptized,
-    m.contact,
-    m.email,
-    m.motherName,
-    m.fatherName,
-    m.married,
-    m.photo || "-",
-    m.deleted || "",
+    member.id,
+    member.timestamp ?? "",
+    member.name ?? "",
+    member.gender ?? "",
+    member.address ?? "",
+    member.birthday ?? "",
+    member.member ?? "",
+    member.baptized ?? "",
+    member.contact ?? "",
+    member.email ?? "",
+    member.motherName ?? "",
+    member.fatherName ?? "",
+    member.married ?? "",
+    member.photo ?? "",
+    member.deleted ?? "",
   ];
 }

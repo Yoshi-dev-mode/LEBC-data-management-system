@@ -38,6 +38,10 @@ p {
 .filter-section{
   font-weight: 300;
 }
+
+.header-section-title {
+  font-weight: 500;
+}
 input:focus {
   border: 2px solid #1CB536;
 }

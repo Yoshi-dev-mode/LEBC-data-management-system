@@ -1,25 +1,11 @@
 import React from "react";
+import { Member } from "@/app/types/member";
 
-// Define your Member type (can be imported from your hook if you already have it)
-export type Member = {
-  id: string | number;
-  name: string;
-  gender?: string;
-  birthday?: string;
-  address?: string;
-  contact?: string;
-  email?: string;
-  member?: string;
-  baptized?: string;
-  married?: string;
-  motherName?: string;
-  fatherName?: string;
-  photo?: string;
-  deleted?: string;
-};
-
-// Only allow editable fields in the Editable component
-export type EditableField = Exclude<keyof Member, "id" | "photo" | "deleted">;
+// Only allow editable fields
+export type EditableField = Exclude<
+  keyof Member,
+  "id" | "photo" | "deleted"
+>;
 
 interface EditableProps {
   label: string;
@@ -29,7 +15,7 @@ interface EditableProps {
   edit: boolean;
 }
 
-const SELECT_FIELDS: Record<string, string[]> = {
+const SELECT_FIELDS: Partial<Record<EditableField, string[]>> = {
   gender: ["Male", "Female"],
   member: ["Yes", "No"],
   baptized: ["Yes", "No"],
@@ -43,16 +29,12 @@ export default function Editable({
   setForm,
   edit,
 }: EditableProps) {
-  const isSelect = SELECT_FIELDS[field as string];
+  const options = SELECT_FIELDS[field];
 
   const handleChange = (value: string) => {
-    setForm(prev => {
-      if (!prev) return prev; // safety guard
-      return {
-        ...prev,
-        [field]: value,
-      };
-    });
+    setForm(prev =>
+      prev ? { ...prev, [field]: value } : prev
+    );
   };
 
   return (
@@ -60,15 +42,14 @@ export default function Editable({
       <p className="text-sm text-gray-500">{label}</p>
 
       {edit ? (
-        isSelect ? (
+        options ? (
           <select
-            value={(form[field] as string) || ""}
+            value={String(form[field] ?? "")}
             onChange={(e) => handleChange(e.target.value)}
             className="border p-2 rounded w-full cursor-pointer"
           >
-
             <option value="">Select</option>
-            {isSelect.map((option) => (
+            {options.map(option => (
               <option key={option} value={option}>
                 {option}
               </option>
@@ -76,14 +57,15 @@ export default function Editable({
           </select>
         ) : (
           <input
-            value={(form[field] as string) || ""}
+            value={String(form[field] ?? "")}
             onChange={(e) => handleChange(e.target.value)}
             className="border p-2 rounded w-full"
           />
-
         )
       ) : (
-        <p className="font-medium">{form[field] || "-"}</p>
+        <p className="font-medium">
+          {String(form[field] ?? "-")}
+        </p>
       )}
     </div>
   );

@@ -94,7 +94,7 @@ export default function MemberProfile() {
 
         )}
 
-        <h1 className="text-3xl font-bold mt-4">
+        <h1 className="text-3xl header-section-title mt-4">
           {isEditing ? (
             <input
               value={form.name}

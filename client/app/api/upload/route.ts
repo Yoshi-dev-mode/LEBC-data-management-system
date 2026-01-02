@@ -21,35 +21,42 @@ export async function POST(req: Request) {
       auth,
     });
 
-const response = await drive.files.create({
-  requestBody: {
-    name: file.name,
-    parents: [process.env.GOOGLE_DRIVE_FOLDER_ID!],
-  },
-  media: {
-    mimeType: file.type,
-    body: Readable.from(buffer),
-  },
-});
+    const response = await drive.files.create({
+      requestBody: {
+        name: file.name,
+        parents: [process.env.GOOGLE_DRIVE_FOLDER_ID!],
+      },
+      media: {
+        mimeType: file.type,
+        body: Readable.from(buffer),
+      },
+    });
 
-const fileId = response.data.id;
+    const fileId = response.data.id;
 
-if (!fileId) {
-  throw new Error("Google Drive upload failed");
-}
+    if (!fileId) {
+      throw new Error("Google Drive upload failed");
+    }
 
-await drive.permissions.create({
-  fileId,
-  requestBody: {
-    role: "reader",
-    type: "anyone",
-  },
-});
+    await drive.permissions.create({
+      fileId,
+      requestBody: {
+        role: "reader",
+        type: "anyone",
+      },
+    });
     return NextResponse.json({
       url: `https://drive.google.com/uc?export=view&id=${fileId}`,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("UPLOAD ERROR:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+
+    const message =
+      err instanceof Error ? err.message : "Upload failed";
+
+    return NextResponse.json(
+      { error: message },
+      { status: 500 }
+    );
   }
 }

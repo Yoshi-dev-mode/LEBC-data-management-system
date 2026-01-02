@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useEffect, useState } from "react";
-import { Context } from "@/app/layout";
+import { Context } from "../providers/Providers";
 import { memberToRow } from "@/lib/memberMapper";
 import {
   uploadImage,
@@ -10,23 +10,7 @@ import {
   deleteMember,
 } from "@/app/services/memberService";
 import { extractDriveFileId } from "@/lib/drive";
-
-export type Member = {
-  id: string | number;
-  name: string;
-  gender?: string;
-  birthday?: string;
-  address?: string;
-  contact?: string;
-  email?: string;
-  member?: string;
-  baptized?: string;
-  married?: string;
-  motherName?: string;
-  fatherName?: string;
-  photo?: string;
-  deleted?: string;
-};
+import { Member } from "@/app/types/member";
 
 export function useMemberProfile(id: string | string[] | undefined) {
   const { data, setRows } = useContext(Context);
@@ -38,6 +22,8 @@ export function useMemberProfile(id: string | string[] | undefined) {
   const [isEditing, setIsEditing] = useState(false);
   const [previewPhoto, setPreviewPhoto] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
+
+
 
   // sync form with member
   useEffect(() => {
@@ -70,16 +56,18 @@ export function useMemberProfile(id: string | string[] | undefined) {
 
   async function save() {
     if (!form || uploading) return;
+    if (memberIndex === -1) return;
 
     const updated = [...data];
     updated[memberIndex] = form;
 
-    const rows = updated.map(memberToRow);
-    setRows(rows);
+    setRows(updated); 
     setIsEditing(false);
-    await saveMembers(rows);
+
+    await saveMembers(updated.map(memberToRow)); 
     setPreviewPhoto(null);
   }
+
 
   async function remove() {
     if (!form) return;
@@ -95,7 +83,8 @@ export function useMemberProfile(id: string | string[] | undefined) {
         : m
     );
 
-    setRows(updated.map(memberToRow));
+    setRows(updated);
+    await saveMembers(updated.map(memberToRow));
   }
 
   return {

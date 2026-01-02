@@ -6,7 +6,8 @@ import {
   NotWaterDropIcon, NotMemberIcon, MaleIcon, FemaleIcon, DashboardIcon
 } from "../../lib/icons";
 import { useContext } from "react";
-import { Context } from "../layout";
+import { Context } from "../providers/Providers";
+import { Member } from "@/app/types/member";
 
 // Import recharts
 import {
@@ -14,20 +15,13 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend
 } from "recharts";
 
-type Member = {
-  gender?: "Male" | "Female";
-  member?: "Yes" | "No";
-  baptized?: "Yes" | "No";
-  deleted?: string;
-};
-
-
 export default function Mainpage() {
   const { data } = useContext(Context);
 
   // ✅ ONLY active (not deleted) members
-  const activeData = data.filter((p: Member) => p.deleted !== "TRUE");
+  const activeData = data.filter(p => p.deleted !== "TRUE");
 
+  // ✅ COUNTS
   const counts = activeData.reduce(
     (acc, p) => {
       if (p.gender === "Male") acc.male++;
@@ -47,7 +41,7 @@ export default function Mainpage() {
       not_baptized: 0,
     }
   );
-
+  
   const pie = (labels: string[], values: number[]) =>
     labels.map((name, i) => ({ name, value: values[i] }));
 

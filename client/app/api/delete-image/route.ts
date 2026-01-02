@@ -18,10 +18,14 @@ export async function POST(req: Request) {
     await drive.files.delete({ fileId });
 
     return NextResponse.json({ success: true });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("DELETE ERROR:", err);
+
+    const message =
+      err instanceof Error ? err.message : "Delete failed";
+
     return NextResponse.json(
-      { error: err.message || "Delete failed" },
+      { error: message },
       { status: 500 }
     );
   }
