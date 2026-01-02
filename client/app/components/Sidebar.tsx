@@ -19,7 +19,7 @@ export default function Sidebar() {
   return (
     <nav className="shadow-xl sidebar sticky top-0 h-screen w-64 bg-white">
       <div className="flex items-center p-5">
-        <Image src="/logo.png" alt="Logo" width={35} height={70} />
+        <Image src="/favicon.ico" alt="Logo" width={35} height={70} />
         <h4 className="text-green text-2xl font-extrabold ml-3">LEBC</h4>
       </div>
 
